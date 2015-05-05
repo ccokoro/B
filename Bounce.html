@@ -1,0 +1,187 @@
+<!--life-->
+
+<head>
+    <title>Leaderboard</title>
+</head>
+<body>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>BOUNCE</h1>
+       {{> loginButtons}}
+    </div>
+  </div>
+    
+       {{#if currentUser}}
+                <p>Hello,{{firstName}}!</p>
+        {{/if}}
+
+    {{> location}}
+    
+
+    
+    <div class="row">
+      
+      <div class="col-md-6">
+        <p class="text-center">
+          <button class="btn btn-info btn-lg" id="addButton">Add a Meeting</button></p>
+    <!--    <div id="successMessage" class="well well-sm">Your meeting was added.</div>-->
+        {{> addMeetingForm }}
+      </div>
+      <div class="col-md-6">
+        <p class="text-center">
+     
+        </p>
+        {{> viewColumn}}
+      </div>
+      
+    </div> <!-- end of row -->
+    
+  </body>
+
+<template name="location">
+<!--    <button class="allmeetings">All</button>-->
+    <button class="allmeetings">All</button>
+    <p>Filter by location</p>
+    <button class="locations" >KSC</button>
+    <button class="locations" >Alumnae Ballroom</button>
+    <button class="locations" >Res Quad</button>
+    <button class="locations" >Boat House</button>
+    <button class="locations" >Tower Steps</button>
+    <button class="locations" >Sev Green</button>
+    <button class="locations" >Claflin Ellipticals</button>
+    <button class="locations" >Chapel</button>
+    <button class="locations" >Mcafee treadmills</button>
+
+    <p>Filter by activity</p>
+       <button class="activities">Running</button>
+       <button class="activities">Yoga</button>
+        <button class="activities">Strength Training</button>
+        <button class="activities">Zumba</button>
+        <button class="activities">Swimming</button>
+        <button class="activities">Walking</button>
+        <button class="activities">Spinning</button>
+        <button class="activities">Bootcamp</button>
+</template>
+
+<template name="leaderboard">
+    <!-- {{player}} -->
+   <!-- <p id="total">{{totalplayers}}</p> -->
+   {{> addPlayerForm}}
+
+    {{#if showSelectedPlayer}}
+        <p>Selected Player: <span id="selectedPlayer">{{showSelectedPlayer.name}}</span></p>
+    {{/if}}
+
+   <div class="btn-group">
+     <button class="increment btn btn-primary">Give 5 Points</button>
+     <button class="decrement btn btn-primary">Take 5 Points</button>
+     <button class="remove btn btn-primary">Remove Player</button>
+   </div>
+
+    <table class="table table-condensed">
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    {{#each player}}
+        <tr>
+            <td class="player {{selectedClass}}" width="200px">{{name}}</td> 
+            <td><span class="badge">{{score}}</span>
+            </td>
+        </tr>
+    {{/each}}
+    <!-- <li>Selected Player: {{showSelectedPlayer.name}}</li> -->
+    </tbody>
+	</table>
+</template>
+
+<template name="addPlayerForm">
+    {{#if currentUser}}
+        <form>
+            <input type="text" name="playerName">
+            <button type="submit" class="btn btn-primary">Add Player</button>
+        </form>
+    {{/if}}
+</template>
+
+
+<!-- Eni's code for meetingapp-->
+
+<!-- The template that handles the form for adding meetings to the database.
+CAREFUL! The input fields are using some default values to make it easier
+to enter dummy values. To set values such as the current date or time, you'll
+need to write Javascript code.
+-->
+
+<template name="addMeetingForm">
+    {{#if currentUser}}
+    {{#if addMeeting}}
+  <form class="form-group">
+    
+    <p><label>Location: 
+      <select class="form-control" name="meetingLocation" >
+          <option value="KSC">KSC</option>
+          <option value="Alumnae Ballroom">Alumnae Ballroom</option>
+          <option value="Res Quad">Res Quad</option>
+          <option value="Boat House">Boat House</option>
+          <option value="Tower Steps">Tower Steps</option>
+          <option value="Sev Green">Sev Green</option>
+          <option value="Claflin Ellipticals">Claflin Ellipticals</option>
+          <option value="Chapel">Chapel</option>
+          <option value="Mcafee treadmills">Mcafee treadmills</option>
+        </select>
+          </label>
+    </p>
+      <p><label>Activity: 
+         <select class="form-control" name="meetingActivity">
+            <option value="Running">Running</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Strength Training">Strength Training</option>
+            <option value="Zumba">Zumba</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Walking">Walking</option>
+            <option value="Spinning">Spinning</option>
+            <option value="Bootcamp">Bootcamp</option>
+        </select> </label>
+    </p>
+    <p><label>Date: 
+      <input type="date" class="form-control" name="meetingDate" required value="2015-04-29"> </label>
+    </p>
+    <p><label>Start time: 
+      <input type="time" class="form-control" name="startTime" required value="12:30"> </label>
+    </p>
+    <p><label>End time: 
+      <input type="time" class="form-control" name="endTime" required value="13:30"> </label>
+    </p>
+    <p>
+      <input type="submit" value="Submit" class="btn-sm btn-info ">
+    </p>
+  </form> 
+  {{/if}}
+    {{/if}}
+</template>
+
+<!-- The template that will show the meetings stored in the database -->
+<template name="viewColumn">
+
+  <div class="list-group">
+  {{#each meetingsList}}
+    <div class="list-group-item">
+        {{#if currentUser}}
+          <span class="list-group-item-heading mName">{{firstName}}</span>  
+        {{/if}}
+      <span> in {{location}}.</span><br>
+      <span>On {{dateStr}}, {{startTimeStr}} - {{endTimeStr}}.</span>
+        <span> is doing {{activityStr}}</span>
+    </div>
+  {{/each}}
+  </div>
+
+</template>
+
+
